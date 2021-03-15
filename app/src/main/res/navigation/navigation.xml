@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/menuFragment">
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="android.example.com.matsusmagic.view.MenuFragment"
+        android:label="Main Menu"
+        tools:layout="@layout/fragment_menu">
+        <action
+            android:id="@+id/actionMenutoSearch"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/actionMenuToDecks"
+            app:destination="@id/decksFragment" />
+        <action
+            android:id="@+id/actionMenuToCard"
+            app:destination="@id/cardFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_communityContentFragment"
+            app:destination="@id/communityContentFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="android.example.com.matsusmagic.view.SearchFragment"
+        android:label="Enter a card name"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/actionSearchToMenu"
+            app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/actionSearchToCard"
+            app:destination="@id/cardFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/decksFragment"
+        android:name="android.example.com.matsusmagic.view.DecksFragment"
+        android:label="Your Decks"
+        tools:layout="@layout/fragment_decks">
+        <action
+            android:id="@+id/actionDeckToDeckList"
+            app:destination="@id/deckListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cardFragment"
+        android:name="android.example.com.matsusmagic.view.CardFragment"
+        android:label="Card Details">
+        <argument
+            android:name="cardId"
+            android:defaultValue="0"
+            app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/deckListFragment"
+        android:name="android.example.com.matsusmagic.view.DeckListFragment"
+        android:label="Your Deck">
+        <action
+            android:id="@+id/actionDeckListToCard"
+            app:destination="@id/cardFragment" />
+        <argument
+            android:name="deckId"
+            android:defaultValue="0"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/communityContentFragment"
+        android:name="android.example.com.matsusmagic.view.CommunityContentFragment"
+        android:label="Community Content"
+        tools:layout="@layout/fragment_community_content" />
+</navigation>

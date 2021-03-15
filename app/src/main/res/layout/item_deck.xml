@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="deck"
+            type="android.example.com.matsusmagic.model.Decks" />
+
+        <variable
+            name="listener"
+            type="android.example.com.matsusmagic.view.OnCardListener" />
+
+        <variable
+            name="buttonlistener"
+            type="android.example.com.matsusmagic.view.DecksListAdapter.OnDeleteDeckListener" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{listener::onDeckClicked}"
+            android:padding="2dp">
+
+            <ImageView
+                android:id="@+id/cardImage"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:contentDescription="@string/card_image_description"
+                android:src="@drawable/cardback" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="5"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/deckName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="@{deck.deckName}"
+                    android:textStyle="bold"/>
+
+                <TextView
+                    android:id="@+id/cardquantity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="@{String.valueOf(deck.cardQuantity) + ` cards`}"
+                    android:textColor="#C4C5C7" />
+
+                <TextView
+                    android:id="@+id/cardSetName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/to_be_defined"
+                    android:textColor="@color/goldButton"
+                    android:textStyle="italic"
+                    android:visibility="gone" />
+
+                <TextView
+                    android:id="@+id/deckIdTextView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(deck.deckId)}"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/cardCost"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="5dp"
+                    android:text="@string/total_price"
+                    android:layout_marginStart="5dp" />
+
+                <TextView
+                    android:id="@+id/cardPriceSCG"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="5dp"
+                    android:text="@{`$` + String.format(`%.2f`, deck.totalPriceUsd)}"
+                    android:textColor="#184ADC "
+                    android:layout_marginStart="5dp" />
+
+                <TextView
+                    android:id="@+id/cardPriceTix"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginLeft="5dp"
+                    android:text="@{String.format(`%.2f`, deck.totalPriceTix) + `tix`}"
+                    android:textColor="#9DB0E7"
+                    android:layout_marginStart="5dp" />
+
+                <Button
+                    android:id="@+id/deleteDeckButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:onClick="@{() -> buttonlistener.onDeleteClicked(deck)}"
+                    android:text="@string/delete" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>

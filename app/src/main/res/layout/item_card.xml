@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="card"
+            type="android.example.com.matsusmagic.model.Card" />
+        <variable
+            name="listener"
+            type="android.example.com.matsusmagic.view.OnCardListener" />
+        <variable
+            name="buttonlistener"
+            type="android.example.com.matsusmagic.view.SecondaryAdapter.OnDeleteCardListener" />
+    </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="10dp">
+    <LinearLayout
+        android:padding="2dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="@{listener::onCardClicked}">
+        <ImageView
+            android:id="@+id/cardImage"
+            android:layout_width="80dp"
+            android:layout_height="100dp"
+            android:imageurl="@{card.image_uris.large}"
+            android:contentDescription="@string/card_image_description" />
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/cardName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@{card.name}"
+                android:layout_marginStart="5dp" />
+            <TextView
+                android:id="@+id/cardType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@{card.type_line}"
+                android:layout_marginStart="5dp"
+                android:textColor="#C4C5C7"/>
+            <TextView
+                android:id="@+id/cardSetName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:layout_marginStart="5dp"
+                android:text="@{card.set_name}"
+                android:textStyle="italic"
+                android:textColor="@color/goldButton"/>
+            <TextView
+                android:id="@+id/cardId"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:text="@{card.card_id}"/>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:orientation="vertical">
+            <TextView
+                android:layout_gravity="end"
+                android:id="@+id/cardCost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@{card.mana_cost}"
+                android:layout_marginStart="5dp" />
+            <TextView
+                android:layout_gravity="end"
+                android:id="@+id/cardPriceSCG"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@{`$` + String.valueOf(card.prices.usd)}"
+                android:textColor="#184ADC "
+                android:layout_marginStart="5dp" />
+            <TextView
+                android:layout_gravity="end"
+                android:id="@+id/cardPriceTix"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5dp"
+                android:text="@{String.valueOf(card.prices.tix) + `tix`}"
+                android:textColor="#9DB0E7"
+                android:layout_marginStart="5dp" />
+            <Button
+                android:id="@+id/deleteButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/delete"
+                android:onClick="@{() -> buttonlistener.onDeleteClicked(card)}"
+                android:layout_gravity="end"
+
+                android:visibility="gone"/>
+        </LinearLayout>
+
+
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+</layout>

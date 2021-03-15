@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="videoData"
+            type="android.example.com.matsusmagic.model.YouTubeVideo"/>
+        <variable
+            name="listener"
+            type="android.example.com.matsusmagic.view.OnCardListener" />
+            </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="2dp"
+        app:cardElevation="10dp"
+        app:cardCornerRadius="10dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:onClick="@{listener::onCardClicked}">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="3">
+                <TextView
+                    android:id="@+id/channelTitleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{videoData.snippet.channelTitle}"
+                    android:textSize="18sp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/titleTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{videoData.snippet.title}"
+                    android:textSize="14sp"/>
+                <TextView
+                    android:id="@+id/publishedDateTextView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@{videoData.snippet.publishedAt}"
+                    android:textStyle="italic"
+                    android:textColor="#737272"/>
+                <TextView
+                    android:id="@+id/videoIdtv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    />
+            </LinearLayout>
+            <ImageView
+                android:id="@+id/videothumbnail"
+                android:layout_width="match_parent"
+                android:layout_height="90dp"
+                android:layout_weight="8"
+                android:contentDescription="@string/video_thumbnail" />
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+</layout>

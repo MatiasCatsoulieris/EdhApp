@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">EdhApp</string>
+    <string name="usdPrice">$%1$f</string>
+    <string name="tixPrice">%1$ftix</string>
+    <string name="card_image_description">Card Image</string>
+    <string name="add_to_deck_button">Add to deck</string>
+    <string name="view_on_gatherer_button">View on Gatherer</string>
+    <string name="view_on_edhrec_button">View on EdhRec</string>
+    <string name="format_standard">Standard</string>
+    <string name="format_modern">Modern</string>
+    <string name="format_legacy">Legacy</string>
+    <string name="format_vintage">Vintage</string>
+    <string name="format_commander">Commander</string>
+    <string name="format_pauper">Pauper</string>
+    <string name="format_historic">Historic</string>
+    <string name="format_pioneer">Pioneer</string>
+    <string name="error_message">An error occurred while loading data.</string>
+    <string name="rulings">Rulings</string>
+    <string name="deck_name">Deck Name</string>
+    <string name="create">Create</string>
+    <string name="cancel">Cancel</string>
+    <string name="add_deck_button">Add Deck Button</string>
+    <string name="cards_and_prices">Cards and Prices</string>
+    <string name="commander_of_the_day">Commander of the day:</string>
+    <string name="community_content">Community Content</string>
+    <string name="more_content">More content…</string>
+    <string name="card_name">Card Name</string>
+    <string name="search">Search</string>
+    <string name="to_be_defined">TO BE DEFINED</string>
+    <string name="total_price">Total price</string>
+    <string name="delete">Delete</string>
+    <string name="video_thumbnail">video thumbnail</string>
+    <string name="release_date">Release Date</string>
+    <string name="my_decks">My Decks</string>
+
+</resources>
