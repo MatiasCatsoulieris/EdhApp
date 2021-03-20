@@ -7,8 +7,11 @@ import androidx.room.*
 @Dao
 interface CardDao {
 
-    @Query("SELECT * FROM CardToSearch WHERE name LIKE '%' || :cardname || '%'")
+    @Query("SELECT * FROM CardToSearch WHERE name is :cardname")
     suspend fun getCardIds(cardname: String) : MutableList<CardToSearch>
+
+    @Query("SELECT name FROM CardToSearch WHERE name LIKE '%' || :cardname || '%'")
+    suspend fun getcardNames(cardname: String) : MutableList<String>
 
     @Query ("SELECT * FROM Decks")
     suspend fun getDecks() : MutableList<Decks>

@@ -42,13 +42,13 @@ class MenuFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _sharedPreferences = this.context?.getSharedPreferences(MY_PREF_NAME, 0x0000)
         viewmodel = ViewModelProviders.of(this).get(MenuViewModel::class.java)
         binding.swiperefreshlayout.setOnRefreshListener {
             viewmodel.getYouTubePlaylist()
             getCommanderOfTheDay()
             binding.swiperefreshlayout.isRefreshing = false
         }
-
         binding.youtubeList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = youtubeadapter
@@ -77,7 +77,7 @@ class MenuFragment : Fragment() {
     *  day changes
     */
     private fun getCommanderOfTheDay() {
-        _sharedPreferences = context?.getSharedPreferences(MY_PREF_NAME, 0x0000)
+
         val editor = sharedPreferences.edit()
         val lastTimeStarted = sharedPreferences.getInt(DATE, -1)
         val calendar = Calendar.getInstance()
@@ -86,7 +86,6 @@ class MenuFragment : Fragment() {
             viewmodel.getCommander()
             editor?.putInt(DATE, today)
             editor?.apply()
-
         } else {
             if (commandercardimage.drawable == null) {
                 val commanderUri = sharedPreferences.getString(
@@ -98,7 +97,6 @@ class MenuFragment : Fragment() {
         }
 
     }
-
     private fun observeViewModel() {
         viewmodel.cardLiveData.observe(viewLifecycleOwner, { card ->
             card?.let {

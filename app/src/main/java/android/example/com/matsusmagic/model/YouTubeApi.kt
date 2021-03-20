@@ -14,7 +14,7 @@ interface YouTubeApi {
         @Query("part") part: String = "snippet",
         @Query("maxResults") maxResults: String = "5",
         @Query("playlistId") playlistId: String,
-        @Query("key") key: String = "Place your Api Key here"
+        @Query("key") key: String = "Insert you Api Key Here"
 
     ): Single<ChannelModel>
 }

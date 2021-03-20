@@ -12,6 +12,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 import kotlinx.coroutines.launch
+import java.util.ArrayList
 
 
 class SearchViewModel(application: Application): BaseViewModel(application) {
@@ -19,6 +20,7 @@ class SearchViewModel(application: Application): BaseViewModel(application) {
     private val cardsService = CardsApiService()
     private val disposable = CompositeDisposable()
 
+    val cardNames = MutableLiveData<List<String>>()
     val cards = MutableLiveData<List<Card>>()
     val cardsLoadError: MutableLiveData<Boolean> = MutableLiveData(false)
     val loading: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -53,6 +55,13 @@ class SearchViewModel(application: Application): BaseViewModel(application) {
             }
         }
 
+    }
+    fun getCardNamesForAutoComplete(cardname: String) {
+        launch {
+            val cardnames =
+                cardname.let { CardDatabase(getApplication()).cardDao().getcardNames(cardname) }
+            cardNames.value = cardnames
+        }
     }
 
     private fun fetchFromRemote(listOfCards: MutableList<CardToSearch>) {
