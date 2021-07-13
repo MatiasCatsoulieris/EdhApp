@@ -1,11 +1,14 @@
-package android.example.com.matsusmagic.view
+package android.example.com.matsusmagic.view.adapters
 
 import android.example.com.matsusmagic.R
 
+
 import android.example.com.matsusmagic.databinding.ItemDeckBinding
-import android.example.com.matsusmagic.model.Card
 
 import android.example.com.matsusmagic.model.Decks
+import android.example.com.matsusmagic.view.DecksFragmentDirections
+import android.example.com.matsusmagic.view.OnCardListener
+import android.example.com.matsusmagic.view.ViewPagerFragmentDirections
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -39,7 +42,7 @@ class DecksListAdapter(val decksList: ArrayList<Decks>, val buttonlistener: OnDe
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DeckViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view =
-            DataBindingUtil.inflate<ItemDeckBinding>(inflater, R.layout.item_deck, parent, false)
+            ItemDeckBinding.inflate(inflater, parent, false)
         return DeckViewHolder(view)
     }
 
@@ -55,7 +58,7 @@ class DecksListAdapter(val decksList: ArrayList<Decks>, val buttonlistener: OnDe
 
     override fun onDeckClicked(v: View) {
         val deckId = v.deckIdTextView.text.toString().toInt()
-        val action = DecksFragmentDirections.actionDeckToDeckList()
+        val action = ViewPagerFragmentDirections.actionViewPagerToDecklist()
         action.deckId = deckId
         Navigation.findNavController(v).navigate(action)
         super.onDeckClicked(v)

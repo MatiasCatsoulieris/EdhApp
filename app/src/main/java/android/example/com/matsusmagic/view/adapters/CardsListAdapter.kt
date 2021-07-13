@@ -1,8 +1,9 @@
-package android.example.com.matsusmagic.view
+package android.example.com.matsusmagic.view.adapters
 
 
 import android.example.com.matsusmagic.databinding.ItemCardBinding
 import android.example.com.matsusmagic.model.Card
+import android.example.com.matsusmagic.view.OnCardListener
 import androidx.recyclerview.widget.RecyclerView
 
 

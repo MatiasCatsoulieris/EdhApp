@@ -8,20 +8,23 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.example.com.matsusmagic.R
+
 import android.example.com.matsusmagic.databinding.FragmentMenuBinding
 import android.example.com.matsusmagic.util.getProgressDrawable
 import android.example.com.matsusmagic.util.loadImageBig
+import android.example.com.matsusmagic.view.ViewPagerFragmentDirections
+import android.example.com.matsusmagic.view.adapters.YouTubeListAdapter
 import android.example.com.matsusmagic.viewmodel.MenuViewModel
-import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.Navigation
 import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.fragment_menu.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 
 class MenuFragment : Fragment() {
 
-    private lateinit var viewmodel: MenuViewModel
+    private val viewmodel: MenuViewModel by viewModel<MenuViewModel>()
     private val MY_PREF_NAME = "My Preferences"
     private var _sharedPreferences: SharedPreferences? = null
     private val sharedPreferences get() = _sharedPreferences!!
@@ -43,7 +46,9 @@ class MenuFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _sharedPreferences = this.context?.getSharedPreferences(MY_PREF_NAME, 0x0000)
-        viewmodel = ViewModelProviders.of(this).get(MenuViewModel::class.java)
+        viewmodel.getYouTubePlaylist()
+        observeViewModel()
+
         binding.swiperefreshlayout.setOnRefreshListener {
             viewmodel.getYouTubePlaylist()
             getCommanderOfTheDay()
@@ -55,17 +60,9 @@ class MenuFragment : Fragment() {
         }
         binding.morecontenttextview.setOnClickListener {
             Navigation.findNavController(it)
-                .navigate(MenuFragmentDirections.actionMenuFragmentToCommunityContentFragment())
-        }
-        binding.searchbutton.setOnClickListener {
-            Navigation.findNavController(it).navigate(MenuFragmentDirections.actionMenutoSearch())
+                .navigate(ViewPagerFragmentDirections.actionViewPagerToCommunityContent())
         }
 
-        binding.decksbutton.setOnClickListener {
-            Navigation.findNavController(it).navigate(MenuFragmentDirections.actionMenuToDecks())
-        }
-        viewmodel.getYouTubePlaylist()
-        observeViewModel()
     }
 
     override fun onResume() {
@@ -114,7 +111,7 @@ class MenuFragment : Fragment() {
                 editor?.apply()
                 binding.commandercardimage.setOnClickListener { view ->
                     val cardID = card.card_id
-                    val action = MenuFragmentDirections.actionMenuToCard()
+                    val action = ViewPagerFragmentDirections.actionViewPagerToCard()
                     action.cardId = cardID
                     Navigation.findNavController(view).navigate(action)
                 }

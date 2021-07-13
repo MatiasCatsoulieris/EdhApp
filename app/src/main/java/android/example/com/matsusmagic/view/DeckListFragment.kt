@@ -2,20 +2,21 @@ package android.example.com.matsusmagic.view
 
 import android.example.com.matsusmagic.databinding.FragmentDeckListBinding
 import android.example.com.matsusmagic.model.Card
+import android.example.com.matsusmagic.view.adapters.SecondaryAdapter
 import android.example.com.matsusmagic.viewmodel.DeckListViewModel
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class DeckListFragment : Fragment() {
 
     private var deckId: Int = 0
-    private lateinit var viewmodel: DeckListViewModel
+    private val viewmodel: DeckListViewModel by viewModel<DeckListViewModel>()
     private var _binding: FragmentDeckListBinding? = null
     private val binding get() = _binding!!
     private val cardsListAdapter = SecondaryAdapter(arrayListOf(), SecondaryAdapter.OnDeleteCardListener { card: Card ->
@@ -32,7 +33,6 @@ class DeckListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewmodel = ViewModelProviders.of(this).get(DeckListViewModel::class.java)
         arguments?.let {
             deckId = DeckListFragmentArgs.fromBundle(it).deckId
         }

@@ -1,8 +1,10 @@
 package android.example.com.matsusmagic.view
 
 
+
 import android.app.Dialog
 import android.content.Intent
+import android.example.com.chatapp.util.CharsToIconUtil
 import android.example.com.matsusmagic.R
 import android.example.com.matsusmagic.databinding.FragmentCardBinding
 import android.example.com.matsusmagic.model.Card
@@ -16,14 +18,14 @@ import android.view.*
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import kotlinx.android.synthetic.main.fragment_card.*
 import kotlinx.android.synthetic.main.dialog_create_deck.view.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class CardFragment : Fragment() {
 
     private var cardId: String = "0"
-    private lateinit var viewmodel: CardViewModel
+    private val viewmodel: CardViewModel by viewModel()
     private lateinit var currentcard: Card
     private var _binding: FragmentCardBinding? = null
     private val binding get() = _binding!!
@@ -48,13 +50,17 @@ class CardFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewmodel = ViewModelProviders.of(this).get(CardViewModel::class.java)
         arguments?.let {
             cardId = CardFragmentArgs.fromBundle(it).cardId
         }
         viewmodel.fetchCard(cardId)
         observeViewModel()
+        setListeners()
 
+
+    }
+
+    private fun setListeners() {
         binding.addToDeckButton.setOnClickListener {
             viewmodel.getDecks()
         }
@@ -75,6 +81,7 @@ class CardFragment : Fragment() {
             card?.let {
                 binding.card = card
                 currentcard = card
+                CharsToIconUtil.setIconInTxtView(binding.oracleTv, card.oracle_text!!,requireContext())
                 checkLegalities()
                 binding.loadingView2.visibility = View.GONE
                 binding.constraintlayout.visibility = View.VISIBLE
@@ -124,9 +131,10 @@ class CardFragment : Fragment() {
 
     // onClick Event for the card image
 
-    private fun createImageDialog(v: View) {
+        private fun createImageDialog(v: View) {
         val customDialog = Dialog(v.context)
         customDialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        customDialog.window?.setBackgroundDrawableResource(R.drawable.popupbackground)
         val view = layoutInflater.inflate(R.layout.dialog_card_image, null, false)
         view.findViewById<ImageView>(R.id.imageView2)
             .loadImageBig(binding.card?.image_uris?.large, getProgressDrawable(view.context))

@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/menuFragment">
+    app:startDestination="@id/viewPagerFragment">
 
     <fragment
         android:id="@+id/menuFragment"
@@ -72,4 +72,19 @@
         android:name="android.example.com.matsusmagic.view.CommunityContentFragment"
         android:label="Community Content"
         tools:layout="@layout/fragment_community_content" />
+    <fragment
+        android:id="@+id/viewPagerFragment"
+        android:name="android.example.com.matsusmagic.view.ViewPagerFragment"
+        android:label="EDH App"
+        tools:layout="@layout/fragment_view_pager">
+        <action
+            android:id="@+id/actionViewPagerToDecklist"
+            app:destination="@id/deckListFragment" />
+        <action
+            android:id="@+id/actionViewPagerToCard"
+            app:destination="@id/cardFragment" />
+        <action
+            android:id="@+id/actionViewPagerToCommunityContent"
+            app:destination="@id/communityContentFragment" />
+    </fragment>
 </navigation>

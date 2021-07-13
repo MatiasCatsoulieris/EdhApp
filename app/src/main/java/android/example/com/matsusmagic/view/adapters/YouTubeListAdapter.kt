@@ -1,4 +1,4 @@
-package android.example.com.matsusmagic.view
+package android.example.com.matsusmagic.view.adapters
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
@@ -7,15 +7,26 @@ import android.example.com.matsusmagic.databinding.ItemYtvideoBinding
 import android.example.com.matsusmagic.model.YouTubeVideo
 import android.example.com.matsusmagic.util.getProgressDrawable
 import android.example.com.matsusmagic.util.loadImage
+import android.example.com.matsusmagic.view.OnCardListener
 import android.net.Uri
+import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.startActivity
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_ytvideo.view.*
-
+import java.sql.Date
+import java.text.DateFormat
+import java.text.SimpleDateFormat
+import java.time.*
+import java.time.format.DateTimeFormatter.ofLocalizedDateTime
+import java.time.format.FormatStyle
+import java.util.*
+import kotlin.collections.ArrayList
 
 class YouTubeListAdapter(private val videoList: ArrayList<YouTubeVideo>) :
     RecyclerView.Adapter<YouTubeListAdapter.VideoViewHolder>(), OnCardListener {
@@ -35,8 +46,16 @@ class YouTubeListAdapter(private val videoList: ArrayList<YouTubeVideo>) :
         return VideoViewHolder(view)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         holder.view.videoData = videoList[position]
+        val date = videoList[position].snippet?.publishedAt
+        Log.d("TIME LOG 1", date.toString())
+
+
+
+
+        //holder.view.publishedDateTextView.text = format
         holder.view.videoIdtv.text = videoList[position].snippet?.resourceId?.get("videoId")
         holder.view.listener = this
         holder.view.videothumbnail.loadImage(

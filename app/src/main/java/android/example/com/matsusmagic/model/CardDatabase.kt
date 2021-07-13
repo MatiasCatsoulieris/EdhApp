@@ -10,6 +10,9 @@ import androidx.room.TypeConverters
 @TypeConverters(TypeConverter::class)
 abstract class CardDatabase: RoomDatabase() {
     abstract fun cardDao(): CardDao
+    abstract fun cardToSearchDao() : CardToSearchDao
+    abstract fun deckDao(): DecksDao
+    abstract fun cardsInDecksDao(): CardsInDecksDao
 
     companion object {
         @Volatile private var instance: CardDatabase? = null
@@ -20,12 +23,12 @@ abstract class CardDatabase: RoomDatabase() {
                 instance = it
             }
         }
+
         private fun buildDatabase(context: Context) = Room.databaseBuilder(
             context.applicationContext,
             CardDatabase::class.java,
             "carddatabase"
         ).createFromAsset("CardDataBase.db")
-
         .build()
     }
 }

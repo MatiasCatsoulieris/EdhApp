@@ -2,20 +2,19 @@ package android.example.com.matsusmagic.viewmodel
 
 import android.app.Application
 import android.example.com.matsusmagic.model.ChannelModel
-import android.example.com.matsusmagic.model.YouTubeApiService
 import android.example.com.matsusmagic.model.YouTubeVideo
+import android.example.com.matsusmagic.repositories.MainRepo
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
-class CommunityContentViewModel(application: Application): BaseViewModel(application) {
+class CommunityContentViewModel(private val repo: MainRepo, application: Application): BaseViewModel(application) {
 
     val playListData = MutableLiveData<List<YouTubeVideo>>()
     val error = MutableLiveData<Boolean>()
     val loading = MutableLiveData<Boolean>()
-    private val youTubeService = YouTubeApiService()
     private val youTubeList = mutableListOf<YouTubeVideo>()
     private val disposable = CompositeDisposable()
     private val playlistIds = arrayListOf(
@@ -37,7 +36,7 @@ class CommunityContentViewModel(application: Application): BaseViewModel(applica
         youTubeList.clear()
         for (playlistId in playlistIds) {
             disposable.add(
-                youTubeService.getChannelPlaylist(playlistId)
+                repo.getChannelPlaylist(playlistId)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableSingleObserver<ChannelModel>() {

@@ -1,24 +1,28 @@
 package android.example.com.matsusmagic.view
 
+
 import android.example.com.matsusmagic.R
+import android.example.com.matsusmagic.databinding.FragmentSearchBinding
+import android.example.com.matsusmagic.model.Card
+import android.example.com.matsusmagic.util.hideKeyboard
+import android.example.com.matsusmagic.view.adapters.PrimaryAdapter
+import android.example.com.matsusmagic.viewmodel.SearchViewModel
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.example.com.matsusmagic.databinding.FragmentSearchBinding
-import android.example.com.matsusmagic.model.Card
-import android.example.com.matsusmagic.viewmodel.SearchViewModel
+import android.view.inputmethod.EditorInfo
 import android.widget.ArrayAdapter
 import androidx.core.widget.doAfterTextChanged
-import androidx.lifecycle.ViewModelProviders
+import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.util.*
 
 
 class SearchFragment : Fragment() {
 
-    private lateinit var viewModel: SearchViewModel
+    private val viewModel: SearchViewModel by viewModel<SearchViewModel>()
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val cardsListAdapter = PrimaryAdapter(arrayListOf())
@@ -34,20 +38,31 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProviders.of(this).get(SearchViewModel::class.java)
 
         binding.cardsList.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = cardsListAdapter
         }
         binding.cardNameEditText.doAfterTextChanged { text ->
-            viewModel.getCardNamesForAutoComplete(text.toString().toLowerCase(Locale.ROOT))
-
+            if (text.toString().length >= 3) {
+                viewModel.getCardNamesForAutoComplete(text.toString().toLowerCase(Locale.ROOT))
+            }
+        }
+        binding.cardNameEditText.setOnEditorActionListener { v, actionId, _ ->
+            var action = false
+            if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                v?.hideKeyboard()
+                val cardname = binding.cardNameEditText.text.toString()
+                viewModel.fuzzyCardSearch(cardname)
+                action = true
+            }
+            action
         }
 
 
         binding.searchbutton.setOnClickListener {
             val cardname = binding.cardNameEditText.text.toString()
+            it.hideKeyboard()
             viewModel.refresh(cardname)
 
         }

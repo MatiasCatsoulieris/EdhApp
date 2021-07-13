@@ -28,7 +28,8 @@
                     android:singleLine="true"
                     android:hint="@string/card_name"
                     android:layout_weight="9"
-                    android:inputType="text"/>
+                    android:inputType="text"
+                    android:imeOptions="actionSearch"/>
 
 
                 <Button
