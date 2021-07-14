@@ -4,10 +4,12 @@ import android.app.Application
 import android.example.com.matsusmagic.model.Card
 import android.example.com.matsusmagic.model.CardDatabase
 import android.example.com.matsusmagic.model.CardsInDecks
+import android.example.com.matsusmagic.repositories.MainRepo
 import androidx.lifecycle.MutableLiveData
 import kotlinx.coroutines.launch
 
-class DeckListViewModel(application: Application): BaseViewModel(application) {
+class DeckListViewModel(private val repo: MainRepo, application: Application) :
+    BaseViewModel(application) {
 
     val cardList = MutableLiveData<List<Card>>()
     val cardsLoadError: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -21,29 +23,24 @@ class DeckListViewModel(application: Application): BaseViewModel(application) {
 
     fun deleteCardFromDeck(card: Card, deckId: Int) {
         launch {
-            CardDatabase(getApplication()).cardDao().deleteCardFromDeck(card.card_id, deckId)
-            val cardInRecord: MutableList<CardsInDecks> = CardDatabase(getApplication()).cardDao().getCardRecords(card.card_id)
-            if (cardInRecord.size ==  0) CardDatabase(getApplication()).cardDao().deleteCard(card.card_id)
+            repo.deleteCardFromDeck(card.card_id, deckId)
+            val cardInRecord: MutableList<CardsInDecks> = repo.getCardRecords(card.card_id)
+            if (cardInRecord.size == 0) repo.deleteCard(card.card_id)
             card.prices?.usd?.let {
-                CardDatabase(getApplication()).cardDao().updatePriceDeleteUs(
-                    deckId,
-                    it
-                )
+                repo.updatePriceDeleteUs(deckId, it)
             }
             card.prices?.tix?.let {
-                CardDatabase(getApplication()).cardDao().updatePriceDeleteTix(
-                    deckId,
-                    it
-                )
+                repo.updatePriceDeleteTix(deckId, it)
             }
-            CardDatabase(getApplication()).cardDao().updateQuantityDelete(deckId)
+            repo.updateQuantityDelete(deckId)
         }
 
     }
 
     private fun getCardsFromRecordDatabase(deckId: Int) {
         launch {
-            val cardsToSearch = CardDatabase(getApplication()).cardDao().getCardsFromDeck(deckId)
+            val cardsToSearch =
+                repo.getCardsFromDeck(deckId)
             if (cardsToSearch.isEmpty()) {
                 loading.value = false
                 cardsLoadError.value = true
@@ -57,10 +54,10 @@ class DeckListViewModel(application: Application): BaseViewModel(application) {
         cards.clear()
         for (cardId in cardIds) {
             launch {
-                val card = CardDatabase(getApplication()).cardDao().getCard(cardId)
+                val card = repo.getCardFromDatabase(cardId)
                 card?.let {
                     cards.add(it)
-                    if(cards.size == cardIds.size) {
+                    if (cards.size == cardIds.size) {
                         loading.value = false
                         cardsLoadError.value = false
                         cardList.value = cards

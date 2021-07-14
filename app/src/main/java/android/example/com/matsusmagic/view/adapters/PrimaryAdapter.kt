@@ -1,14 +1,17 @@
-package android.example.com.matsusmagic.view
+package android.example.com.matsusmagic.view.adapters
 
+import android.example.com.chatapp.util.CharsToIconUtil
 import android.example.com.matsusmagic.R
+
 import android.example.com.matsusmagic.databinding.ItemCardBinding
 import android.example.com.matsusmagic.model.Card
+import android.example.com.matsusmagic.view.SearchFragmentDirections
+import android.example.com.matsusmagic.view.ViewPagerFragmentDirections
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.Navigation
-import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.item_card.view.*
 
 class PrimaryAdapter(cardsList: ArrayList<Card>) : CardsListAdapter(cardsList) {
@@ -23,12 +26,14 @@ class PrimaryAdapter(cardsList: ArrayList<Card>) : CardsListAdapter(cardsList) {
 
     override fun onBindViewHolder(holder: CardViewHolder, position: Int) {
         holder.view.card = cardsList[position]
+        CharsToIconUtil.setIconInTxtView(holder.view.cardCost, cardsList[position].mana_cost!!,
+        holder.itemView.context)
         holder.view.listener = this
     }
 
     override fun onCardClicked(v: View) {
         val cardId = v.cardId.text.toString()
-        val action = SearchFragmentDirections.actionSearchToCard()
+        val action = ViewPagerFragmentDirections.actionViewPagerToCard()
         action.cardId = cardId
         Navigation.findNavController(v).navigate(action)
         super.onCardClicked(v)

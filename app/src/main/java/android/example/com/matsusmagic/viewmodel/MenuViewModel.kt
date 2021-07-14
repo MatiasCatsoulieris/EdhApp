@@ -2,21 +2,20 @@ package android.example.com.matsusmagic.viewmodel
 
 import android.app.Application
 import android.example.com.matsusmagic.model.*
+import android.example.com.matsusmagic.repositories.MainRepo
 import androidx.lifecycle.MutableLiveData
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.observers.DisposableSingleObserver
 import io.reactivex.schedulers.Schedulers
 
-class MenuViewModel(application: Application) : BaseViewModel(application) {
+class MenuViewModel(private val repo: MainRepo, application: Application) : BaseViewModel(application) {
 
     val cardLiveData = MutableLiveData<Card>()
     val playListData = MutableLiveData<List<YouTubeVideo>>()
     val id = MutableLiveData<String>()
     val isLoading = MutableLiveData<Boolean>()
     val isError = MutableLiveData<Boolean>()
-    private val cardsService = CardsApiService()
-    private val youTubeService = YouTubeApiService()
     private val disposable = CompositeDisposable()
     private val youTubeList = mutableListOf<YouTubeVideo>()
     private val playlistIds = arrayListOf(
@@ -31,7 +30,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
     fun getCommander() {
         disposable.add(
-            cardsService.getCardOfTheDay()
+            repo.getCardOfTheDay()
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<Card>() {
@@ -50,7 +49,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
 
     fun getCommanderByCachedId(id: String) {
         disposable.add(
-            cardsService.getCard(id)
+            repo.getCard(id)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(object : DisposableSingleObserver<Card>() {
@@ -71,7 +70,7 @@ class MenuViewModel(application: Application) : BaseViewModel(application) {
         youTubeList.clear()
         for (playlistId in playlistIds) {
             disposable.add(
-                youTubeService.getChannelPlaylist(playlistId)
+                repo.getChannelPlaylist(playlistId)
                     .subscribeOn(Schedulers.newThread())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribeWith(object : DisposableSingleObserver<ChannelModel>() {
